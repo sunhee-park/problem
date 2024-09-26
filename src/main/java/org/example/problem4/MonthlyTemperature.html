@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature & Humidity Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px;
+        }
+        input[type="number"] {
+            width: 90%;
+            text-align: center;
+        }
+        button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .chart-container {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<h2>기온 및 습도 입력 테이블 및 그래프</h2>
+
+<div class="container">
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>월</th>
+                <th>평균 기온 (°C)</th>
+                <th>평균 습도 (%)</th>
+            </tr>
+            </thead>
+            <tbody id="input-table">
+            <tr>
+                <td>1월</td>
+                <td><input type="number" id="temp1" value="4.5" oninput="updateChart()"></td>
+                <td><input type="number" id="hum1" value="64" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>2월</td>
+                <td><input type="number" id="temp2" value="5.2" oninput="updateChart()"></td>
+                <td><input type="number" id="hum2" value="61" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>3월</td>
+                <td><input type="number" id="temp3" value="8.7" oninput="updateChart()"></td>
+                <td><input type="number" id="hum3" value="59" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>4월</td>
+                <td><input type="number" id="temp4" value="14.4" oninput="updateChart()"></td>
+                <td><input type="number" id="hum4" value="69" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>5월</td>
+                <td><input type="number" id="temp5" value="18.9" oninput="updateChart()"></td>
+                <td><input type="number" id="hum5" value="65" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>6월</td>
+                <td><input type="number" id="temp6" value="22.7" oninput="updateChart()"></td>
+                <td><input type="number" id="hum6" value="71" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>7월</td>
+                <td><input type="number" id="temp7" value="27.8" oninput="updateChart()"></td>
+                <td><input type="number" id="hum7" value="70" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>8월</td>
+                <td><input type="number" id="temp8" value="24.1" oninput="updateChart()"></td>
+                <td><input type="number" id="hum8" value="71" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>9월</td>
+                <td><input type="number" id="temp9" value="18.1" oninput="updateChart()"></td>
+                <td><input type="number" id="hum9" value="68" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>10월</td>
+                <td><input type="number" id="temp10" value="12.2" oninput="updateChart()"></td>
+                <td><input type="number" id="hum10" value="66" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>11월</td>
+                <td><input type="number" id="temp11" value="7.0" oninput="updateChart()"></td>
+                <td><input type="number" id="hum11" value="65" oninput="updateChart()"></td>
+            </tr>
+            <tr>
+                <td>12월</td>
+                <td><input type="number" id="temp12" value="4.5" oninput="updateChart()"></td>
+                <td><input type="number" id="hum12" value="64" oninput="updateChart()"></td>
+            </tr>
+            </tbody>
+        </table>
+        <button onclick="randomizeInputs()">Random</button>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+</div>
+
+<script>
+    // 차트 초기화
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            datasets: [{
+                label: '평균 기온 (°C)',
+                data: [4.5, 5.2, 8.7, 14.4, 18.9, 22.7, 27.8, 24.1, 18.1, 12.2, 7.0, 4.5],
+                borderColor: 'blue',
+                fill: false,
+                yAxisID: 'y-axis-temp',
+            }, {
+                label: '평균 습도 (%)',
+                data: [64, 61, 59, 69, 65, 71, 70, 71, 68, 66, 65, 64],
+                borderColor: 'red',
+                fill: false,
+                yAxisID: 'y-axis-hum',
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    id: 'y-axis-temp',
+                    type: 'linear',
+                    position: 'left',
+                    scaleLabel: {
+                        display: true,
+                        labelString: '평균 기온 (°C)'
+                    },
+                    ticks: {
+                        beginAtZero: false,
+                        suggestedMax: 40
+                    }
+                }, {
+                    id: 'y-axis-hum',
+                    type: 'linear',
+                    position: 'right',
+                    scaleLabel: {
+                        display: true,
+                        labelString: '평균 습도 (%)'
+                    },
+                    ticks: {
+                        beginAtZero: false,
+                        suggestedMax: 100
+                    }
+                }]
+            }
+        }
+    });
+
+    // 입력 값 변경 시 차트 업데이트
+    function updateChart() {
+        for (let i = 1; i <= 12; i++) {
+            chart.data.datasets[0].data[i - 1] = parseFloat(document.getElementById(`temp${i}`).value);
+            chart.data.datasets[1].data[i - 1] = parseFloat(document.getElementById(`hum${i}`).value);
+        }
+        chart.update();
+    }
+
+    // 랜덤 값 생성 함수
+    function randomizeInputs() {
+        for (let i = 1; i <= 12; i++) {
+            document.getElementById(`temp${i}`).value = (Math.random() * 30 + 5).toFixed(1); // 기온 5 ~ 35
+            document.getElementById(`hum${i}`).value = (Math.random() * 30 + 50).toFixed(0); // 습도 50 ~ 80
+        }
+        updateChart();
+    }
+</script>
+
+</body>
+</html>
