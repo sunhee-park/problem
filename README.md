@@ -1,8 +1,8 @@
-IntelliJ IDEA 2024.2.2
-java : Amazon Corretto 21.0.4
-build : gradle
+- IntelliJ IDEA 2024.2.2
+- java : Amazon Corretto 21.0.4
+- build : gradle
 
-Test :
+- Test :
 org.example.problem1.AnalysisCVS.java main() 함수 실행
 org.example.problem2.AsyncTCPServer.java, AsyncTCPClient.java main() 함수 실행
 org.example.problem3.EmployInfo.java main() 함수 실행
